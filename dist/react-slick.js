@@ -775,7 +775,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // console.log('slideHandler', index);
 	    var targetSlide, currentSlide;
 	    var targetLeft, currentLeft;
-	    var _callback2;
+	    var callback;
 
 	    if (this.props.waitForAnimate && this.state.animating) {
 	      return;
@@ -799,21 +799,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	      }
 
-	      _callback2 = function callback() {
+	      callback = function callback() {
 	        _this.setState({
 	          animating: false
 	        });
 	        if (_this.props.afterChange) {
 	          _this.props.afterChange(currentSlide);
 	        }
-	        _ReactTransitionEvents2.default.removeEndEventListener(_reactDom2.default.findDOMNode(_this.refs.track).children[currentSlide], _callback2);
+	        // ReactTransitionEvents.removeEndEventListener(ReactDOM.findDOMNode(this.refs.track).children[currentSlide], callback);
 	      };
 
 	      this.setState({
 	        animating: true,
 	        currentSlide: targetSlide
 	      }, function () {
-	        _ReactTransitionEvents2.default.addEndEventListener(_reactDom2.default.findDOMNode(this.refs.track).children[currentSlide], _callback2);
+	        setTimeout(callback, this.props.speed);
+	        // ReactTransitionEvents.addEndEventListener(ReactDOM.findDOMNode(this.refs.track).children[currentSlide], callback);
 	      });
 
 	      if (this.props.beforeChange) {
@@ -903,12 +904,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        swipeLeft: null
 	      };
 
-	      _callback2 = function _callback() {
+	      callback = function callback() {
 	        _this.setState(nextStateChanges);
 	        if (_this.props.afterChange) {
 	          _this.props.afterChange(currentSlide);
 	        }
-	        _ReactTransitionEvents2.default.removeEndEventListener(_reactDom2.default.findDOMNode(_this.refs.track), _callback2);
+	        // ReactTransitionEvents.removeEndEventListener(ReactDOM.findDOMNode(this.refs.track), callback);
 	      };
 
 	      this.setState({
@@ -916,7 +917,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        currentSlide: currentSlide,
 	        trackStyle: (0, _trackHelper.getTrackAnimateCSS)((0, _objectAssign2.default)({ left: targetLeft }, this.props, this.state))
 	      }, function () {
-	        _ReactTransitionEvents2.default.addEndEventListener(_reactDom2.default.findDOMNode(this.refs.track), _callback2);
+	        setTimeout(callback, this.props.speed);
+	        // ReactTransitionEvents.addEndEventListener(ReactDOM.findDOMNode(this.refs.track), callback);
 	      });
 	    }
 
