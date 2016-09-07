@@ -255,8 +255,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	      window.detachEvent('onresize', this.onWindowResized);
 	    }
-	    if (this.state.autoPlayTimer) {
-	      window.clearInterval(this.state.autoPlayTimer);
+	    if (this.autoPlayTimer) {
+	      window.clearInterval(this.autoPlayTimer);
 	    }
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -331,7 +331,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2.default.createElement(
 	      'div',
-	      { className: className, onMouseEnter: this.onInnerSliderEnter, onMouseLeave: this.onInnerSliderLeave },
+	      { className: className, onMouseEnter: this.onInnerSliderEnter, onTouchStart: this.onInnerSliderEnter, onMouseLeave: this.onInnerSliderLeave, onTouchEnd: this.onInnerSliderLeave },
 	      _react2.default.createElement(
 	        'div',
 	        {
@@ -947,7 +947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  autoPlay: function autoPlay() {
 	    var _this2 = this;
 
-	    if (this.state.autoPlayTimer) {
+	    if (this.autoPlayTimer) {
 	      return;
 	    }
 	    var play = function play() {
@@ -957,17 +957,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    };
 	    if (this.props.autoplay) {
-	      this.setState({
-	        autoPlayTimer: window.setInterval(play, this.props.autoplaySpeed)
-	      });
+	      this.autoPlayTimer = window.setInterval(play, this.props.autoplaySpeed);
 	    }
 	  },
 	  pause: function pause() {
-	    if (this.state.autoPlayTimer) {
-	      window.clearInterval(this.state.autoPlayTimer);
-	      this.setState({
-	        autoPlayTimer: null
-	      });
+	    if (this.autoPlayTimer) {
+	      window.clearInterval(this.autoPlayTimer);
+	      this.autoPlayTimer = null;
 	    }
 	  }
 	};
@@ -1296,7 +1292,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var initialState = {
 	    animating: false,
 	    dragging: false,
-	    autoPlayTimer: null,
 	    currentDirection: 0,
 	    currentLeft: null,
 	    currentSlide: 0,

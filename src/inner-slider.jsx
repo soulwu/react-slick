@@ -55,8 +55,8 @@ export var InnerSlider = React.createClass({
     } else {
       window.detachEvent('onresize', this.onWindowResized);
     }
-    if (this.state.autoPlayTimer) {
-      window.clearInterval(this.state.autoPlayTimer);
+    if (this.autoPlayTimer) {
+      window.clearInterval(this.autoPlayTimer);
     }
   },
   componentWillReceiveProps: function(nextProps) {

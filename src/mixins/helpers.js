@@ -249,7 +249,7 @@ var helpers = {
     return 'vertical';
   },
   autoPlay: function () {
-    if (this.state.autoPlayTimer) {
+    if (this.autoPlayTimer) {
       return;
     }
     var play = () => {
@@ -261,17 +261,13 @@ var helpers = {
       }
     };
     if (this.props.autoplay) {
-      this.setState({
-        autoPlayTimer: window.setInterval(play, this.props.autoplaySpeed)
-      });
+      this.autoPlayTimer = window.setInterval(play, this.props.autoplaySpeed);
     }
   },
   pause: function () {
-    if (this.state.autoPlayTimer) {
-      window.clearInterval(this.state.autoPlayTimer);
-      this.setState({
-        autoPlayTimer: null
-      });
+    if (this.autoPlayTimer) {
+      window.clearInterval(this.autoPlayTimer);
+      this.autoPlayTimer = null;
     }
   }
 };
