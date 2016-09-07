@@ -193,7 +193,7 @@ export var InnerSlider = React.createClass({
     }
 
     return (
-      <div className={className} onMouseEnter={this.onInnerSliderEnter} onMouseLeave={this.onInnerSliderLeave}>
+      <div className={className} onMouseEnter={this.onInnerSliderEnter} onTouchStart={this.onInnerSliderEnter} onMouseLeave={this.onInnerSliderLeave} onTouchEnd={this.onInnerSliderLeave}>
         {prevArrow}
         <div
           ref={this.listRefHandler}

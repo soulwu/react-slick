@@ -283,6 +283,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Hack for autoplay -- Inspect Later
 	    this.initialize(this.props);
 	    this.adaptHeight();
+
+	    // To support server-side rendering
+	    if (!window) {
+	      return;
+	    }
 	    if (window.addEventListener) {
 	      window.addEventListener('resize', this.onWindowResized);
 	    } else {
@@ -299,7 +304,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      window.detachEvent('onresize', this.onWindowResized);
 	    }
 	    if (this.state.autoPlayTimer) {
-	      window.clearInterval(this.state.autoPlayTimer);
+	      clearInterval(this.state.autoPlayTimer);
 	    }
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -419,7 +424,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2.default.createElement(
 	      'div',
-	      { className: className, onMouseEnter: this.onInnerSliderEnter, onMouseLeave: this.onInnerSliderLeave },
+	      { className: className, onMouseEnter: this.onInnerSliderEnter, onTouchStart: this.onInnerSliderEnter, onMouseLeave: this.onInnerSliderLeave, onTouchEnd: this.onInnerSliderLeave },
 	      prevArrow,
 	      _react2.default.createElement(
 	        'div',
@@ -708,7 +713,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  // Fallback for IE8
-	  if (!window.addEventListener && window.attachEvent) {
+	  if (window && !window.addEventListener && window.attachEvent) {
 	    style.marginLeft = spec.left + 'px';
 	  }
 
@@ -1086,13 +1091,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    if (this.props.autoplay) {
 	      this.setState({
-	        autoPlayTimer: window.setInterval(play, this.props.autoplaySpeed)
+	        autoPlayTimer: setInterval(play, this.props.autoplaySpeed)
 	      });
 	    }
 	  },
 	  pause: function pause() {
 	    if (this.state.autoPlayTimer) {
-	      window.clearInterval(this.state.autoPlayTimer);
+	      clearInterval(this.state.autoPlayTimer);
 	      this.setState({
 	        autoPlayTimer: null
 	      });
