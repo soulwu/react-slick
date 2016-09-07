@@ -55,23 +55,15 @@ var getKey = (child, fallbackKey) => {
     return (child.key === null || child.key === undefined) ? fallbackKey : child.key;
 };
 
-var renderSlides = function (spec) {
+var renderSlides = (spec) => {
   var key;
   var slides = [];
   var preCloneSlides = [];
   var postCloneSlides = [];
   var count = React.Children.count(spec.children);
-
+  var child;
 
   React.Children.forEach(spec.children, (elem, index) => {
-    let child;
-    var childOnClickOptions = {
-      message: 'children',
-      index: index,
-      slidesToScroll: spec.slidesToScroll,
-      currentSlide: spec.currentSlide
-    };
-
     if (!spec.lazyLoad | (spec.lazyLoad && spec.lazyLoadedList.indexOf(index) >= 0)) {
       child = elem;
     } else {
@@ -87,18 +79,11 @@ var renderSlides = function (spec) {
         cssClasses = slickClasses;
     }
 
-    const onClick = function(e) {
-      child.props && child.props.onClick && child.props.onClick(e)
-      spec.focusOnSelect(childOnClickOptions)
-    }
-
     slides.push(React.cloneElement(child, {
       key: 'original' + getKey(child, index),
       'data-index': index,
       className: cssClasses,
-      tabIndex: '-1',
-      style: assign({outline: 'none'}, child.props.style || {}, childStyle),
-      onClick
+      style: assign({}, child.props.style || {}, childStyle)
     }));
 
     // variableWidth doesn't wrap properly.
@@ -108,22 +93,20 @@ var renderSlides = function (spec) {
       if (index >= (count - infiniteCount)) {
         key = -(count - index);
         preCloneSlides.push(React.cloneElement(child, {
-          key: 'precloned' + getKey(child, key),
+          key: 'cloned' + getKey(child, key),
           'data-index': key,
           className: cssClasses,
-          style: assign({}, child.props.style || {}, childStyle),
-          onClick
+          style: assign({}, child.props.style || {}, childStyle)
         }));
       }
 
       if (index < infiniteCount) {
         key = count + index;
         postCloneSlides.push(React.cloneElement(child, {
-          key: 'postcloned' + getKey(child, key),
+          key: 'cloned' + getKey(child, key),
           'data-index': key,
           className: cssClasses,
-          style: assign({}, child.props.style || {}, childStyle),
-          onClick
+          style: assign({}, child.props.style || {}, childStyle)
         }));
       }
     }
@@ -140,7 +123,7 @@ var renderSlides = function (spec) {
 
 export var Track = React.createClass({
   render: function () {
-    var slides = renderSlides.call(this, this.props);
+    var slides = renderSlides(this.props);
     return (
       <div className='slick-track' style={this.props.trackStyle}>
         { slides }

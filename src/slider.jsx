@@ -9,16 +9,12 @@ import defaultProps from './default-props';
 
 var Slider = React.createClass({
   mixins: [ResponsiveMixin],
-  innerSlider: null,
-  innerSliderRefHandler: function (ref) {
-    this.innerSlider = ref;
-  },
   getInitialState: function () {
     return {
       breakpoint: null
     };
   },
-  componentWillMount: function () {
+  componentDidMount: function () {
     if (this.props.responsive) {
       var breakpoints = this.props.responsive.map(breakpt => breakpt.breakpoint);
       breakpoints.sort((x, y) => x - y);
@@ -43,19 +39,6 @@ var Slider = React.createClass({
       });
     }
   },
-
-  slickPrev: function () {
-    this.innerSlider.slickPrev();
-  },
-
-  slickNext: function () {
-    this.innerSlider.slickNext();
-  },
-
-  slickGoTo: function (slide) {
-    this.innerSlider.slickGoTo(slide)
-  },
-
   render: function () {
     var settings;
     var newProps;
@@ -65,26 +48,15 @@ var Slider = React.createClass({
     } else {
       settings = assign({}, defaultProps, this.props);
     }
-
-    var children = this.props.children;
-    if(!Array.isArray(children)) {
-      children = [children]
-    }
-
-    // Children may contain false or null, so we should filter them
-    children = children.filter(function(child){
-      return !!child
-    })
-
     if (settings === 'unslick') {
       // if 'unslick' responsive breakpoint setting used, just return the <Slider> tag nested HTML
       return (
-        <div>{children}</div>
+        <div>{this.props.children}</div>
       );
     } else {
       return (
-        <InnerSlider ref={this.innerSliderRefHandler} {...settings}>
-          {children}
+        <InnerSlider {...settings}>
+          {this.props.children}
         </InnerSlider>
       );
     }
